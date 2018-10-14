@@ -1,5 +1,5 @@
 #include<bits/stdc++.h>
-
+#include <unistd.h>
 using namespace std;
 
 #include "dec.cpp"
@@ -112,7 +112,7 @@ void LogOut()
 
 void LogIn()
 {
-
+    char ch;
     string uname , pass , p;
     cout<<"Enter a Username : ";
     cin>>uname;
@@ -120,7 +120,11 @@ void LogIn()
 
     if(pass =="$")
         error(false);
-    cout<<"Enter your Password : ";
+    cout<<"Enter your Password \n show password(y/n)? ";
+    cin>>ch;
+    if(ch == 'Y' || ch == 'y' )
+   {
+    cout<<"Your password will be visible\nPassword: ";
     cin>>p;
     p = md5(p);
     if( p != pass )
@@ -131,6 +135,21 @@ void LogIn()
        notes(uname.c_str());
 
        }
+   }
+   else
+   {
+	cout<<"Password will be hidden\n";
+	char *password = getpass("Password: ");
+	p = md5(password);
+    if( p != pass )
+        error(false);
+    else
+       {
+       cal_key(pass);
+       notes(uname.c_str());
+
+       } 
+   }
 }
 
 void SignUp()
@@ -167,12 +186,23 @@ string isExisting(const char* uname)
 void create(const char* uname)
 {
    string pass;
-   cout<<"Enter Your password : ";
-   cin>>pass;
+    char ch;
+    char *password;
+    cout<<"Enter your Password \n show password(y/n)? ";
+    cin>>ch;
+    if(ch == 'Y' || ch == 'y' )
+   {
+	cout<<"Your password will be visible : ";
+	cin>>password;
+   }
+   else
+   {
+      password = getpass("Your password will be hidden : ");
+   }
     ofstream f1;
    f1.open("users.txt",ios::app);
    f1<<uname<<endl;
-   pass = md5(pass);
+   pass = md5(password);
    f1<<pass<<endl;
    f1.close();
 // create user's file
@@ -183,7 +213,7 @@ void create(const char* uname)
         filename += str.str();
     //    filename += ".txt";
         ofstream out(filename.c_str());
-
+	cout<<"\n You have signed Up Successfully \n";
 }
 
 void error(bool q)
