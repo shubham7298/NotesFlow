@@ -7,23 +7,23 @@ using namespace std;
 #include "md5.cpp"
 
 void init();
-void SignUp();
-void  LogIn();
+void SignUp();// function to create new account. password is hased using MD5.
+void LogIn();// function to login using username and password.
 void create(const char* uname);
 string isExisting(const char* uname);
 void error(bool q);
 void notes(const char* uname);
 void LogOut();
-void LogIn();
 void cal_key(string pass);
 int key;
-
+// opening the file users.txt which holds users info. if file not present then creating new file.
 void init(){
 	ofstream f1;
    	f1.open("users.txt",ios::app);
 	f1.close();
 }
 
+// creating key which would be used for ceasaer's cipher encryption
 void cal_key(string p)
 {
     int sum = 0 ;
@@ -33,9 +33,10 @@ void cal_key(string p)
     return;
 }
 
+//providing choices to users 
 void start()
 {
-  cout<<"1. Sign Up\n2. Log In\n";
+  cout<<"1. Sign Up\n2. Log In\n";// sign up for new user and log in for already existing user
   int choice;
   cin>>choice;
   if( choice == 1 )
@@ -49,6 +50,7 @@ void start()
   }
 }
 
+// opening screen after succesfully loging in
 void notes(const char* uname)
 {
     cout<<"\n You have Logged-In Successfuly \n";
@@ -56,7 +58,7 @@ void notes(const char* uname)
     cout<<"1. Read Notes\n2. Write Notes\n3. Log Out\n";
     int ch;
     cin>>ch;
-    if(ch == 1)
+    if(ch == 1) //Decrypting notes and displaying saved notes
     {
         string filename , u;
         stringstream str;
@@ -75,7 +77,7 @@ void notes(const char* uname)
        readf.close();
     }
 
-    else if(ch == 2)
+    else if(ch == 2) // Writing notes and saving it in encrypted form
     {
         string filename;
         stringstream str;
@@ -96,7 +98,7 @@ void notes(const char* uname)
             }
        writef.close();
     }
-    else if(ch == 3)
+    else if(ch == 3) // logging out from current account
         LogOut();
      else
          cout<<"Invalid Choice";
@@ -226,6 +228,7 @@ void error(bool q)
    start();
 }
 
+// 
 int main()
 {
   int choice_user,f = 0;
